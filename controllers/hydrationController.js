@@ -21,6 +21,13 @@ const logDrink = async (req, res) => {
         const { amount, drinkType, loggedAt } = req.body;
         if (!amount) return res.status(400).json({ success: false, message: 'Amount is required.' });
 
+        const logDate = loggedAt ? new Date(loggedAt) : new Date();
+        const todayStart = startOfDay(new Date());
+
+        if (logDate < todayStart) {
+            return res.status(400).json({ success: false, message: 'Cannot log hydration for past dates.' });
+        }
+
         const entry = await HydrationLog.create({
             userId: req.user._id,
             amount,
