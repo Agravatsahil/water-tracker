@@ -30,7 +30,7 @@ app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 // ─── Rate limiting ───────────────────────────────────────────────────────────
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100,
+    max: 1000, // Increased from 100 to 1000 to avoid 429 errors during normal app usage
     message: { success: false, message: 'Too many requests. Please try again later.' }
 });
 app.use('/api', limiter);
